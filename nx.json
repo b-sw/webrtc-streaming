@@ -15,12 +15,7 @@
             "inputs": ["production", "^production"]
         },
         "test": {
-            "inputs": [
-                "default",
-                "^production",
-                "{workspaceRoot}/jest.preset.js",
-                "{workspaceRoot}/jest.preset.js"
-            ]
+            "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js", "{workspaceRoot}/jest.preset.js"]
         },
         "lint": {
             "inputs": [
@@ -62,7 +57,8 @@
             },
             "library": {
                 "style": "none",
-                "linter": "eslint"
+                "linter": "eslint",
+                "unitTestRunner": "jest"
             }
         }
     }

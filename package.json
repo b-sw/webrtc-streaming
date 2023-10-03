@@ -24,6 +24,7 @@
         "@nestjs/platform-express": "^10.0.2",
         "@nestjs/swagger": "^7.1.12",
         "@swc/helpers": "0.5.2",
+        "@types/webrtc": "^0.0.37",
         "axios": "^1.0.0",
         "class-transformer": "^0.5.1",
         "class-validator": "^0.14.0",
@@ -41,6 +42,8 @@
         "tslib": "^2.3.0"
     },
     "devDependencies": {
+        "@babel/core": "^7.14.5",
+        "@babel/preset-react": "^7.14.5",
         "@nestjs/schematics": "^10.0.1",
         "@nestjs/testing": "^10.0.2",
         "@nx/cypress": "16.9.1",
@@ -68,6 +71,7 @@
         "@vitejs/plugin-react": "4.1.0",
         "@vitest/coverage-c8": "~0.32.0",
         "@vitest/ui": "~0.32.0",
+        "babel-jest": "^29.4.1",
         "cypress": "^12.11.0",
         "eslint": "8.46.0",
         "eslint-config-prettier": "8.1.0",
