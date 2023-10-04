@@ -1,5 +1,6 @@
 /// <reference types="webrtc" />
 import { Flex, Spacer } from '@chakra-ui/react';
+import { syncService } from '@webrtc-streaming/frontend';
 import { useTheme } from './hooks/useTheme';
 
 export const VideoTiles = () => {
@@ -17,6 +18,21 @@ export const VideoTiles = () => {
             console.warn(error.message);
         },
     );
+
+    syncService.sendMessage('myMessage', { myData: 'myData' });
+
+    // const { RTCPeerConnection, RTCSessionDescription } = window;
+    // const peerConnection = new RTCPeerConnection();
+
+    // async function joinCall(socketId) {
+    //     const offer = await peerConnection.createOffer();
+    //     await peerConnection.setLocalDescription(new RTCSessionDescription(offer));
+    //
+    //     socket.emit('call-user', {
+    //         offer,
+    //         to: socketId,
+    //     });
+    // }
 
     return (
         <Flex w={'100%'} rounded={'10'} shadow={'md'} backgroundColor={isLightMode ? 'gray.50' : 'gray.500'}>

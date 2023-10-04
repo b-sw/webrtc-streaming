@@ -15,7 +15,9 @@
         "skipDefaultLibCheck": true,
         "baseUrl": ".",
         "paths": {
-            "@webrtc-streaming/frontend": ["libs/frontend/src/index.ts"]
+            "@webrtc-streaming/backend": ["libs/backend/src/index.ts"],
+            "@webrtc-streaming/frontend": ["libs/frontend/src/index.ts"],
+            "@webrtc-streaming/shared": ["libs/shared/src/index.ts"]
         }
     },
     "exclude": ["node_modules", "tmp"]

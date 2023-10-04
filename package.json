@@ -22,7 +22,9 @@
         "@nestjs/config": "^3.1.1",
         "@nestjs/core": "^10.0.2",
         "@nestjs/platform-express": "^10.0.2",
+        "@nestjs/platform-socket.io": "^10.2.6",
         "@nestjs/swagger": "^7.1.12",
+        "@nestjs/websockets": "^10.2.6",
         "@swc/helpers": "0.5.2",
         "@types/webrtc": "^0.0.37",
         "axios": "^1.0.0",
@@ -39,6 +41,7 @@
         "react-router-dom": "^6.13.0",
         "reflect-metadata": "^0.1.13",
         "rxjs": "^7.8.0",
+        "socket.io-client": "^4.7.2",
         "tslib": "^2.3.0"
     },
     "devDependencies": {

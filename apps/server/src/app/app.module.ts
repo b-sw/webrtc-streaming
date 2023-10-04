@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
+import { EventsModule } from '@webrtc-streaming/backend';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 @Module({
-    imports: [],
+    imports: [EventsModule],
     controllers: [AppController],
     providers: [AppService],
 })
