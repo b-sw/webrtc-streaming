@@ -1,9 +1,12 @@
 /// <reference types="webrtc" />
 import { Flex, Spacer } from '@chakra-ui/react';
-import { syncService } from '@webrtc-streaming/frontend';
 import { useTheme } from './hooks/useTheme';
 
-export const VideoTiles = () => {
+type Props = {
+    peerConnection: RTCPeerConnection;
+};
+
+export const VideoTiles = ({ peerConnection }: Props) => {
     const { isLightMode } = useTheme();
 
     navigator.getUserMedia(
@@ -13,26 +16,20 @@ export const VideoTiles = () => {
             if (localVideo) {
                 (localVideo as HTMLMediaElement).srcObject = stream;
             }
+
+            stream.getTracks().forEach(track => peerConnection.addTrack(track, stream));
         },
         error => {
             console.warn(error.message);
         },
     );
 
-    syncService.sendMessage('myMessage', { myData: 'myData' });
-
-    // const { RTCPeerConnection, RTCSessionDescription } = window;
-    // const peerConnection = new RTCPeerConnection();
-
-    // async function joinCall(socketId) {
-    //     const offer = await peerConnection.createOffer();
-    //     await peerConnection.setLocalDescription(new RTCSessionDescription(offer));
-    //
-    //     socket.emit('call-user', {
-    //         offer,
-    //         to: socketId,
-    //     });
-    // }
+    peerConnection.ontrack = function ({ streams: [stream] }) {
+        const remoteVideo = document.getElementById('remote-video');
+        if (remoteVideo) {
+            (remoteVideo as HTMLMediaElement).srcObject = stream;
+        }
+    };
 
     return (
         <Flex w={'100%'} rounded={'10'} shadow={'md'} backgroundColor={isLightMode ? 'gray.50' : 'gray.500'}>
@@ -41,6 +38,7 @@ export const VideoTiles = () => {
             <Flex direction={'column'}>
                 <Spacer />
                 <video autoPlay muted className="local-video" id="local-video"></video>
+                <video autoPlay muted className="remote-video" id="remote-video"></video>
                 <Spacer />
             </Flex>
 

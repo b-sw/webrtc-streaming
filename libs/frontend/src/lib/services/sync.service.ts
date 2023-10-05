@@ -1,3 +1,4 @@
+import { SocketMessage, SocketPayloads } from '@webrtc-streaming/shared';
 import { io, Socket } from 'socket.io-client';
 
 export class SyncService {
@@ -10,11 +11,15 @@ export class SyncService {
         });
     }
 
-    sendMessage<T extends string>(type: T, payload: Record<string, any>): void {
+    get userId(): string {
+        return this.#socket.id;
+    }
+
+    sendMessage<T extends SocketMessage>(type: T, payload: SocketPayloads[T]): void {
         this.#socket.emit(type, payload);
     }
 
-    addMessageListener<T extends string>(type: T, listenerCallback: (payload: Record<string, any>) => void): void {
+    addListener<T extends SocketMessage>(type: T, listenerCallback: (payload: SocketPayloads[T]) => void): void {
         this.#socket.on(type, listenerCallback as any);
     }
 }
