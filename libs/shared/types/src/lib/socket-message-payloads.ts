@@ -1,4 +1,4 @@
-import { SocketMessage } from 'libs/shared/src/lib/socket-message';
+import { SocketMessage } from './socket-message';
 
 export type RequestCallPayload = {
     offer: any;

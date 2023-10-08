@@ -37,8 +37,12 @@ export const VideoTiles = ({ peerConnection }: Props) => {
 
             <Flex direction={'column'}>
                 <Spacer />
-                <video autoPlay muted className="local-video" id="local-video"></video>
-                <video autoPlay muted className="remote-video" id="remote-video"></video>
+                <Flex border={'1px solid green'}>
+                    <video autoPlay muted className="local-video" id="local-video"></video>
+                </Flex>
+                <Flex border={'1px solid red'}>
+                    <video autoPlay muted className="remote-video" id="remote-video"></video>
+                </Flex>
                 <Spacer />
             </Flex>
 

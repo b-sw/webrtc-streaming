@@ -1,7 +1,7 @@
 import { Avatar, AvatarBadge, Flex, Spacer } from '@chakra-ui/react';
 import { syncService } from '@webrtc-streaming/frontend';
-import { AcceptCallPayload, RequestCallPayload, SocketMessage } from '@webrtc-streaming/shared';
-import { useEffect, useState } from 'react';
+import { AcceptCallPayload, RequestCallPayload, SocketMessage } from '@webrtc-streaming/shared/types';
+import { useEffect, useRef, useState } from 'react';
 import { BiSolidPhoneCall } from 'react-icons/bi';
 import { useTheme } from './hooks/useTheme';
 
@@ -9,13 +9,29 @@ type Props = {
     peerConnection: RTCPeerConnection;
 };
 
+let isCalling = false;
+
 export const ActiveUsers = ({ peerConnection }: Props) => {
+    const isListening = useRef(false);
     const [users, setUsers] = useState<string[]>([]);
-    const [isCalling, setIsCalling] = useState(false);
+
+    const getIsCalling = () => isCalling;
 
     const { isLightMode } = useTheme();
+    useEffect(() => {
+        console.log('re render', isListening.current, isCalling);
+    }, []);
 
     useEffect(() => {
+        console.log('is calling now', isCalling);
+    }, [isCalling]);
+
+    useEffect(() => {
+        if (isListening.current) {
+            return;
+        }
+        console.log('add listeners');
+        isListening.current = true;
         syncService.addListener(SocketMessage.UsersIds, message => {
             setUsers(message.usersIds);
         });
@@ -24,10 +40,11 @@ export const ActiveUsers = ({ peerConnection }: Props) => {
         });
         syncService.addListener(SocketMessage.AcceptCall, async (message: AcceptCallPayload) => {
             await peerConnection.setRemoteDescription(new RTCSessionDescription(message.answer));
+            console.log('get is calling', getIsCalling(), isCalling);
 
             if (!isCalling) {
                 callUser(message.fromUserId);
-                setIsCalling(true);
+                isCalling = true;
             }
         });
         syncService.addListener(SocketMessage.RequestCall, async (message: RequestCallPayload) => {
@@ -41,7 +58,7 @@ export const ActiveUsers = ({ peerConnection }: Props) => {
                 toUserId: message.fromUserId,
             });
         });
-    });
+    }, []);
 
     async function callUser(userId: string) {
         const offer = await peerConnection.createOffer();

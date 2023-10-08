@@ -8,7 +8,7 @@ import {
     SubscribeMessage,
     WebSocketGateway,
 } from '@nestjs/websockets';
-import { AcceptCallPayload, RequestCallPayload, SocketMessage } from '@webrtc-streaming/shared';
+import { AcceptCallPayload, RequestCallPayload, SocketMessage } from '@webrtc-streaming/shared/types';
 import { Server, Socket } from 'socket.io';
 
 @WebSocketGateway(EventsGateway.PORT)
@@ -24,18 +24,21 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
     @SubscribeMessage(SocketMessage.RequestCall)
     handleRequestCall(@ConnectedSocket() client: Socket, @MessageBody() payload: RequestCallPayload): void {
         this.#logger.log(`Client sent message. Id: ${client.id} ${SocketMessage.RequestCall}`);
+
         client.to(payload.toUserId).emit(SocketMessage.RequestCall, payload);
     }
 
     @SubscribeMessage(SocketMessage.AcceptCall)
     handleAcceptCall(@ConnectedSocket() client: Socket, @MessageBody() payload: AcceptCallPayload): void {
         this.#logger.log(`Client sent message. Id: ${client.id} ${SocketMessage.AcceptCall}`);
+
         client.to(payload.toUserId).emit(SocketMessage.AcceptCall, payload);
     }
 
     @SubscribeMessage(SocketMessage.JoinRoom)
     handleJoinLobby(@ConnectedSocket() client: Socket, @MessageBody() payload: {}): void {
         this.#logger.log(`Client sent message. Id: ${client.id} ${SocketMessage.JoinRoom}`);
+
         this.#usersIds.add(client.id);
         client.join(EventsGateway.ROOM);
         this.#server.to(EventsGateway.ROOM).emit(SocketMessage.UsersIds, { usersIds: Array.from(this.#usersIds) });
@@ -43,6 +46,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 
     afterInit(server: Server): void {
         this.#server = server;
+
         this.#logger.log('init');
     }
 
@@ -52,6 +56,7 @@ export class EventsGateway implements OnGatewayInit, OnGatewayConnection, OnGate
 
     handleDisconnect(client: Socket): any {
         this.#logger.log(`Client disconnected. Id: ${client.id}`);
+
         this.#usersIds.delete(client.id);
         this.#server.emit(SocketMessage.UserDisconnected, { userId: client.id });
     }

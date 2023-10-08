@@ -1,4 +1,4 @@
-import { SocketMessage, SocketPayloads } from '@webrtc-streaming/shared';
+import { SocketMessage, SocketPayloads } from '@webrtc-streaming/shared/types';
 import { io, Socket } from 'socket.io-client';
 
 export class SyncService {
