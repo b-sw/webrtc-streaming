@@ -1,12 +1,11 @@
 /// <reference types="webrtc" />
 import { Flex, Spacer } from '@chakra-ui/react';
-import { useTheme } from './hooks/useTheme';
+import { useInjection } from '@webrtc-streaming/shared/di';
+import { CallState } from '../../application/states';
+import { useTheme } from '../hooks/useTheme';
 
-type Props = {
-    peerConnection: RTCPeerConnection;
-};
-
-export const VideoTiles = ({ peerConnection }: Props) => {
+export const VideoTiles = () => {
+    const { peerConnection } = useInjection(CallState);
     const { isLightMode } = useTheme();
 
     navigator.getUserMedia(

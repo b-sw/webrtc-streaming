@@ -1,6 +1,6 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import { MainDashboard, theme } from '@webrtc-streaming/frontend';
-import { DIApplication } from '@webrtc-streaming/shared/di';
+import { DIApplication, DIProvider } from '@webrtc-streaming/shared/di';
 import { RootModule } from './root.module';
 
 export const App = () => {
@@ -8,7 +8,9 @@ export const App = () => {
 
     return (
         <ChakraProvider theme={theme}>
-            <MainDashboard />
+            <DIProvider container={application.rootContainer}>
+                <MainDashboard />
+            </DIProvider>
         </ChakraProvider>
     );
 };

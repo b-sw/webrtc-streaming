@@ -15,7 +15,7 @@ export const DIProvider = ({ container, children }: DIProviderProps) => {
     return <DIContext.Provider value={{ container }}>{children}</DIContext.Provider>;
 };
 
-export function useInjection<T>(token: InjectionToken) {
+export function useInjection<T>(token: InjectionToken<T>) {
     const { container } = useContext(DIContext);
 
     if (!container) {

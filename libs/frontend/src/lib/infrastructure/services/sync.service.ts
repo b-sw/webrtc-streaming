@@ -1,6 +1,8 @@
 import { SocketMessage, SocketPayloads } from '@webrtc-streaming/shared/types';
+import { injectable } from 'inversify';
 import { io, Socket } from 'socket.io-client';
 
+@injectable()
 export class SyncService {
     private static readonly BASE_URL = 'http://localhost:80';
     #socket: Socket = io();
@@ -23,5 +25,3 @@ export class SyncService {
         this.#socket.on(type, listenerCallback as any);
     }
 }
-
-export const syncService = new SyncService();

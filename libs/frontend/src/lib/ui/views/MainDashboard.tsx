@@ -1,13 +1,10 @@
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { Flex, IconButton, Spacer } from '@chakra-ui/react';
-import { useRef } from 'react';
+import { useTheme } from '../hooks/useTheme';
 import { ActiveUsers } from './ActiveUsers';
-import { useTheme } from './hooks/useTheme';
 import { VideoTiles } from './VideoTiles';
 
 export const MainDashboard = () => {
-    const peerConnectionRef = useRef(new RTCPeerConnection());
-
     const { toggleColorMode, isLightMode } = useTheme();
 
     return (
@@ -45,10 +42,10 @@ export const MainDashboard = () => {
                         gap={5}
                     >
                         <Flex h={'90%'}>
-                            <VideoTiles peerConnection={peerConnectionRef.current} />
+                            <VideoTiles />
                         </Flex>
                         <Flex h={'10%'}>
-                            <ActiveUsers peerConnection={peerConnectionRef.current} />
+                            <ActiveUsers />
                         </Flex>
                     </Flex>
                     <Spacer />

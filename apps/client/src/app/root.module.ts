@@ -1,7 +1,7 @@
+import { ApplicationModule } from '@webrtc-streaming/frontend';
 import { Module } from '@webrtc-streaming/shared/di';
-import { FluxModule } from '@webrtc-streaming/shared/flux';
 
 @Module({
-    imports: [FluxModule],
+    imports: [ApplicationModule],
 })
 export class RootModule {}
