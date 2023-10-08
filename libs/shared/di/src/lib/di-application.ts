@@ -1,5 +1,5 @@
+import { Class } from '@webrtc-streaming/shared/types';
 import { Container } from 'inversify';
-import { Class } from './class';
 import { DIModule } from './di-module';
 import { DI_MODULE_METADATA_KEY, DIModuleMetadata } from './di-module.decorator';
 
@@ -21,10 +21,10 @@ export class DIApplication {
     private _createModule(moduleClass: Class<any>): void {
         const moduleConfig = Reflect.getMetadata(DI_MODULE_METADATA_KEY, moduleClass) as DIModuleMetadata;
 
-        moduleConfig.imports?.forEach((importedModuleClass) => this._createModule(importedModuleClass));
+        moduleConfig.imports?.forEach(importedModuleClass => this._createModule(importedModuleClass));
 
         const importedModules =
-            moduleConfig.imports?.map((importedModuleClass) => this.#modules.get(importedModuleClass)!) ?? [];
+            moduleConfig.imports?.map(importedModuleClass => this.#modules.get(importedModuleClass)!) ?? [];
 
         const module = new DIModule({
             imports: importedModules,

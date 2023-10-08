@@ -1,5 +1,5 @@
+import { Class } from '@webrtc-streaming/shared/types';
 import 'reflect-metadata';
-import { Class } from './class';
 import { InvalidModuleConfigError } from './errors';
 import { Provider } from './provider';
 
@@ -18,7 +18,7 @@ const DIModuleMetadataKeys = {
 const metadataKeys = Object.values(DIModuleMetadataKeys);
 
 function validateModuleKeys(keys: string[]): void {
-    keys.forEach((key) => {
+    keys.forEach(key => {
         if (!metadataKeys.includes(key)) {
             throw new InvalidModuleConfigError(key);
         }

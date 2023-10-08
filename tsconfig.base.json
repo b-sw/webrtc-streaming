@@ -18,6 +18,7 @@
             "@webrtc-streaming/backend": ["libs/backend/src/index.ts"],
             "@webrtc-streaming/frontend": ["libs/frontend/src/index.ts"],
             "@webrtc-streaming/shared/di": ["libs/shared/di/src/index.ts"],
+            "@webrtc-streaming/shared/flux": ["libs/shared/flux/src/index.ts"],
             "@webrtc-streaming/shared/types": ["libs/shared/types/src/index.ts"]
         }
     },

@@ -1,5 +1,5 @@
+import { Class } from '@webrtc-streaming/shared/types';
 import { Container } from 'inversify';
-import { Class } from './class';
 import { ModuleAlreadyBootstrappedError } from './errors';
 import { ClassProvider, Provider, ValueProvider } from './provider';
 
@@ -43,7 +43,7 @@ export class DIModule {
         }
 
         const moduleProviders = this._getModuleProviders();
-        moduleProviders.forEach((provider) => {
+        moduleProviders.forEach(provider => {
             this._bindProviderToContainer(provider);
         });
 
@@ -58,7 +58,7 @@ export class DIModule {
         this.#container = container;
 
         const importedModules = this.#config.imports;
-        importedModules.forEach((importedModule) => {
+        importedModules.forEach(importedModule => {
             importedModule._bootstrap(container);
         });
 
@@ -69,10 +69,10 @@ export class DIModule {
         const moduleImports = this.#config.imports;
         const moduleProviders = new Set(this.#config.providers);
 
-        moduleImports.forEach((importedModule) => {
+        moduleImports.forEach(importedModule => {
             const importedModuleProviders = importedModule._getModuleProviders();
 
-            importedModuleProviders.forEach((provider) => {
+            importedModuleProviders.forEach(provider => {
                 moduleProviders.add(provider);
             });
         });

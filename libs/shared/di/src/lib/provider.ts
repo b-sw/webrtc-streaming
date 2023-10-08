@@ -1,4 +1,4 @@
-import { Class } from './class';
+import { Class } from '@webrtc-streaming/shared/types';
 import { InjectionToken } from './injection-token';
 
 export type ClassProvider<T = any> = { provide: InjectionToken; useClass: Class<T> };
