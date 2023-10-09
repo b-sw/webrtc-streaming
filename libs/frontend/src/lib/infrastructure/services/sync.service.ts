@@ -13,7 +13,7 @@ export class SyncService {
         });
     }
 
-    get userId(): string {
+    get socketId(): string {
         return this.#socket.id;
     }
 

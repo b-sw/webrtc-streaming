@@ -1,34 +1,27 @@
 import { Avatar, AvatarBadge, Flex, Spacer } from '@chakra-ui/react';
 import { useInjection } from '@webrtc-streaming/shared/di';
 import { SocketMessage } from '@webrtc-streaming/shared/types';
-import { useEffect } from 'react';
+import { SyncService } from 'libs/frontend/src/lib/infrastructure';
 import { BiSolidPhoneCall } from 'react-icons/bi';
-import { CallUserActionCreator, ListenSocketEventsActionCreator } from '../../application/action-creators';
 import { CallState } from '../../application/states';
-import { SyncService } from '../../infrastructure';
 import { useTheme } from '../hooks/useTheme';
 
 export const ActiveUsers = () => {
-    const callUserActionCreator = useInjection(CallUserActionCreator);
-    const listenSocketEventsActionCreator = useInjection(ListenSocketEventsActionCreator);
+    const callState = useInjection(CallState);
     // todo: refactor, don't use infra in view
     const syncService = useInjection(SyncService);
     const { usersIds, isCalling, peerConnection } = useInjection(CallState);
     const { isLightMode } = useTheme();
-
-    useEffect(() => {
-        listenSocketEventsActionCreator.create();
-    }, []);
 
     const getUsersAvatars = () => {
         return usersIds.map(userId => {
             return (
                 <Avatar
                     key={`avatar-${userId}`}
-                    name={userId === syncService.userId ? 'Bartosz' : 'Szymon'}
+                    name={userId === callState.currentUserId ? 'Bartosz' : 'Szymon'}
                     onClick={() => {
-                        if (userId !== syncService.userId) {
-                            callUserActionCreator.create(userId);
+                        if (userId !== callState.currentUserId) {
+                            callState.callUser(userId);
                         }
                     }}
                 >
@@ -39,6 +32,7 @@ export const ActiveUsers = () => {
     };
 
     const joinLobby = () => {
+        // todo: don't on ui
         syncService.sendMessage(SocketMessage.JoinRoom, {});
     };
 
