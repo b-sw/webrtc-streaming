@@ -26,12 +26,12 @@ describe('state', () => {
         state = testingModule.get(State);
     });
 
-    it('creates a state with props', () => {
+    it('has props', () => {
         expect(state.foo).toEqual(defaultStateStub.foo);
         expect(state.bar).toEqual(defaultStateStub.bar);
     });
 
-    it('creates a state with observable props', () => {
+    it('has initial observable props', () => {
         const fooSpy = jest.fn();
         const barSpy = jest.fn();
 
@@ -40,5 +40,28 @@ describe('state', () => {
 
         expect(fooSpy).toHaveBeenCalledWith(defaultStateStub.foo);
         expect(barSpy).toHaveBeenCalledWith(defaultStateStub.bar);
+    });
+
+    it('sets new state', () => {
+        const newFoo = 'newFoo';
+
+        state.foo = newFoo;
+
+        expect(state.foo).toEqual(newFoo);
+        expect(state.bar).toEqual(defaultStateStub.bar);
+    });
+
+    it('observers new state', () => {
+        const newFoo = 'newFoo';
+        const fooSpy = jest.fn();
+        const barSpy = jest.fn();
+        state.foo$.subscribe(fooSpy);
+        state.bar$.subscribe(barSpy);
+        [fooSpy, barSpy].forEach(spy => spy.mockClear());
+
+        state.foo = newFoo;
+
+        expect(fooSpy).toHaveBeenCalledWith(newFoo);
+        expect(barSpy).not.toHaveBeenCalled();
     });
 });

@@ -1,5 +1,5 @@
 import { injectable } from 'inversify';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, map, Observable } from 'rxjs';
 
 type StateProps = {
     [key: string]: unknown;
@@ -13,8 +13,8 @@ class State<T extends StateProps> {
         this.#props$ = new BehaviorSubject<T>(defaultState);
         const propsNames = Object.keys(defaultState);
 
-        propsNames.forEach((propName) => {
-            this._definePropGetter(propName);
+        propsNames.forEach(propName => {
+            this._definePropAccessors(propName);
             this._definePropObservableGetter(propName);
         });
     }
@@ -23,15 +23,20 @@ class State<T extends StateProps> {
         this.#props$.next({ ...this.#props$.getValue(), ...partialState });
     }
 
-    private _definePropGetter(prop: string): void {
+    private _definePropAccessors(prop: string): void {
         Object.defineProperty(this, prop, {
             get: () => this.#props$.getValue()[prop],
+            set: value => this._setPartialState({ [prop]: value } as Partial<T>),
         });
     }
 
     private _definePropObservableGetter(prop: string): void {
         Object.defineProperty(this, `${prop}$`, {
-            get: () => this.#props$.asObservable().pipe(map((state) => state[prop])),
+            get: () =>
+                this.#props$.asObservable().pipe(
+                    map(state => state[prop]),
+                    distinctUntilChanged(),
+                ),
         });
     }
 }
