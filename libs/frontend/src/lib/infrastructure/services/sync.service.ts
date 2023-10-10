@@ -24,4 +24,8 @@ export class SyncService {
     addListener<T extends SocketMessage>(type: T, listenerCallback: (payload: SocketPayloads[T]) => void): void {
         this.#socket.on(type, listenerCallback as any);
     }
+
+    onConnect(callback: () => void): void {
+        this.#socket.on('connect', callback);
+    }
 }

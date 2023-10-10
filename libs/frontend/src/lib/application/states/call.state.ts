@@ -21,6 +21,7 @@ export class CallState extends State<CallStateModel> {
     constructor(@inject(SyncService) private readonly _syncService: SyncService) {
         super({ ...CallState.DEFAULT_STATE, currentUserId: _syncService.socketId });
 
+        this._syncService.sendMessage(SocketMessage.JoinRoom, {});
         this._listenSocketEvents();
     }
 
@@ -44,6 +45,10 @@ export class CallState extends State<CallStateModel> {
 
         this._syncService.addListener(SocketMessage.RequestCall, async (message: RequestCallPayload) => {
             this._acceptCall(message.offer, message.fromUserId);
+        });
+
+        this._syncService.onConnect(() => {
+            this._setPartialState({ currentUserId: this._syncService.socketId });
         });
     }
 
